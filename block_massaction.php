@@ -83,8 +83,7 @@ class block_massaction extends block_base {
             	'allitems'              => get_string('allitems', 'block_massaction'),
             	'deselectall'           => get_string('deselectall', 'block_massaction'),
                 'withselected'	        => get_string('withselected', 'block_massaction'),
-                'action_movetosection'	=> get_string('action_movetosection', 'block_massaction'),
-                'action_duptosection'	=> get_string('action_duptosection', 'block_massaction')
+                'action_movetosection'	=> get_string('action_movetosection', 'block_massaction')
             );
 
             $jsdisabled = get_string('jsdisabled', 'block_massaction');
@@ -107,8 +106,7 @@ EOB;
                 'hide'         => 't/show',
                 'show'         => 't/hide',
                 'delete'       => 't/delete'
-                //'moveto'     => 't/move',
-                //'dupto'      => 't/duplicate'
+                //'moveto'     => 't/move'
             );
 
             foreach ($action_icons as $action => $icon_path) {
@@ -126,9 +124,6 @@ EOB;
             $this->content->text .= <<< EOB
     <select id="mod-massaction-control-section-list-moveto">
     	<option value="">{$str['action_movetosection']}</option>
-    </select>
-    <select id="mod-massaction-control-section-list-dupto">
-    	<option value="">{$str['action_duptosection']}</option>
     </select>
     <form id="mod-massaction-control-form" name="mod-massaction-control-form" action="{$CFG->wwwroot}/blocks/massaction/action.php" method="POST">
     	<input type="hidden" id="mod-massaction-control-request" name="request" value="">

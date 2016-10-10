@@ -43,7 +43,6 @@ M.block_massaction.init = function(Y, data) {
     // Add the section options to the select boxes.
     var section_selector = document.getElementById('mod-massaction-control-section-list-select');
     var section_moveto   = document.getElementById('mod-massaction-control-section-list-moveto');
-    var section_dupto    = document.getElementById('mod-massaction-control-section-list-dupto');
 
     for (var section_number in sections) {
         if (section_number == 0) {    // General/first section.
@@ -86,12 +85,6 @@ M.block_massaction.init = function(Y, data) {
         section_option.text     = section_text;
         section_option.value    = section_number;
         section_moveto.options[section_moveto.options.length] = section_option;
-
-        // Add to dup-to-section.
-        var section_option      = document.createElement('option');
-        section_option.text     = section_text;
-        section_option.value    = section_number;
-        section_dupto.options[section_dupto.options.length] = section_option;
     }
 
     // Attach event handler for the controls.
@@ -121,9 +114,6 @@ M.block_massaction.init = function(Y, data) {
 
     Y.on('change', function(e) { self.submit_action('moveto'); },
         '#mod-massaction-control-section-list-moveto');
-
-    Y.on('change', function(e) { self.submit_action('dupto'); },
-        '#mod-massaction-control-section-list-dupto');
 };
 
 
@@ -215,14 +205,6 @@ M.block_massaction.submit_action = function(action) {
             // Get the target section.
             submit_data.moveto_target = document.getElementById('mod-massaction-control-section-list-moveto').value;
             if (submit_data.moveto_target.replace(/ /g, '') == '') {
-                return false;
-            }
-            break;
-
-        case 'dupto':
-            // Get the target section.
-            submit_data.dupto_target = document.getElementById('mod-massaction-control-section-list-dupto').value;
-            if (submit_data.dupto_target.replace(/ /g, '') == '') {
                 return false;
             }
             break;
