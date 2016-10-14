@@ -23,7 +23,7 @@
 /**
  * a class that handles inserting checkboxes to the course sections
  */
-var module_selector = function() {
+var Module_selector = function() {
     /* a registry of checkbox IDs, of the format:
      *  'section_number' => [{'module_id'   : <module-ID>,
      *                       'box_id'       : <checkbox_id>}]
@@ -39,7 +39,7 @@ var module_selector = function() {
 /**
  * add checkboxes to all sections
  */
-module_selector.prototype.add_checkboxes = function() {
+Module_selector.prototype.add_checkboxes = function() {
     var self = this;
 
     var section_number   = 0;
@@ -52,43 +52,45 @@ module_selector.prototype.add_checkboxes = function() {
         // Find all LI with class 'activity' or 'resource'.
         var LIs = section.all('li.activity');
 
-        LIs.each(function(module_el) {
-            var module_id = module_el.getAttribute('id');
-
-            // Verify if it's a module container.
-            if (module_id == null || module_id.substring(0, 7) != 'module-') {
-                return false;
-            }
-
-            self.add_module_checkbox(section_number, module_el);
-        });
+        LIs.each(self.parse_list_items(module_el));
 
         section_number++;  // Advance the loop.
         section = Y.one('#section-' + section_number);
     }
 };
 
+Module_selector.prototype.parse_list_items = function(module_el) {
+    var module_id = module_el.getAttribute('id');
+
+    // Verify if it's a module container.
+    if (module_id === null || module_id.substring(0, 7) !== 'module-') {
+        return false;
+    }
+
+    self.add_module_checkbox(section_number, module_el);
+};
+
 /**
  * add a checkbox to a module element
  */
-module_selector.prototype.add_module_checkbox = function(section_number, module_el) {
+Module_selector.prototype.add_module_checkbox = function(section_number, module_el) {
     var self = this;
 
     var module_id = module_el.getAttribute('id');
     var box_id = 'module_selector-' + module_id;
 
     // Avoid creating duplicate checkboxes (in case sharing the library).
-    if (Y.one('#' + box_id) == null) {
+    if (Y.one('#' + box_id) === null) {
         // Add the checkbox.
         var box = Y.Node.create('<input type="checkbox" id="' + box_id + '" class="module_selector_checkbox" />');
 
         // Attach it to the command/action box.
         var control_box = module_el.one('span.commands');
-        if (control_box == null) {
+        if (control_box === null) {
             control_box = module_el.one('span.actions');
         }
 
-        if (control_box != null) {
+        if (control_box !== null) {
             control_box.appendChild(box);
         }
     }
@@ -101,12 +103,12 @@ module_selector.prototype.add_module_checkbox = function(section_number, module_
 };
 
 
-module_selector.prototype.get_section_structure = function() {
+Module_selector.prototype.get_section_structure = function() {
     return this.sections;
 };
 
 
-module_selector.prototype.init = function() {
+Module_selector.prototype.init = function() {
     var self = this;
 
     Y.one('div.block_massaction_jsdisabled').addClass('hidden');

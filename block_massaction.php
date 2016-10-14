@@ -20,36 +20,38 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 class block_massaction extends block_base {
 
     /**
      * initialize the plugin
      */
-    function init() {
+    public function init() {
         $this->title = get_string('blocktitle', 'block_massaction');
     }
 
     /**
      * @see block_base::applicable_formats()
      */
-    function applicable_formats() {
-	    return array('course-view' => true, 'mod' => false, 'tag' => false);
+    public function applicable_formats() {
+        return array('course-view' => true, 'mod' => false, 'tag' => false);
     }
 
     /**
      * no need to have multiple blocks to perform the same functionality
      */
-    function instance_allow_multiple() {
+    public function instance_allow_multiple() {
         return false;
     }
 
     /**
      * @see block_base::get_content()
      */
-    function get_content() {
-        global $CFG, $PAGE, $USER, $COURSE, $OUTPUT;
+    public function get_content() {
+        global $CFG, $PAGE, $COURSE, $OUTPUT;
 
-        if ($this->content !== NULL) {
+        if ($this->content !== null) {
             return $this->content;
         }
 
@@ -59,10 +61,10 @@ class block_massaction extends block_base {
 
         if ($PAGE->user_is_editing()) {
             $jsmodule = array(
-                'name'         => 'block_massaction',
-                'fullpath'     => '/blocks/massaction/module.js',
-                'requires'     => array('base', 'io', 'node', 'json', 'event'),
-                'strings'	   => array(
+                'name'      => 'block_massaction',
+                'fullpath'  => '/blocks/massaction/module.js',
+                'requires'  => array('base', 'io', 'node', 'json', 'event'),
+                'strings'   => array(
                     array('week', 'block_massaction'),
                     array('topic', 'block_massaction'),
                     array('section', 'block_massaction'),
@@ -78,12 +80,12 @@ class block_massaction extends block_base {
                                           array(array('course_format' => $COURSE->format)), true, $jsmodule);
 
             $str = array(
-            	'selectall'             => get_string('selectall', 'block_massaction'),
-            	'itemsin'               => get_string('itemsin', 'block_massaction'),
-            	'allitems'              => get_string('allitems', 'block_massaction'),
-            	'deselectall'           => get_string('deselectall', 'block_massaction'),
-                'withselected'	        => get_string('withselected', 'block_massaction'),
-                'action_movetosection'	=> get_string('action_movetosection', 'block_massaction')
+                'selectall'             => get_string('selectall', 'block_massaction'),
+                'itemsin'               => get_string('itemsin', 'block_massaction'),
+                'allitems'              => get_string('allitems', 'block_massaction'),
+                'deselectall'           => get_string('deselectall', 'block_massaction'),
+                'withselected'          => get_string('withselected', 'block_massaction'),
+                'action_movetosection'  => get_string('action_movetosection', 'block_massaction')
             );
 
             $jsdisabled = get_string('jsdisabled', 'block_massaction');
@@ -100,23 +102,22 @@ class block_massaction extends block_base {
 EOB;
 
             // Print the action links.
-            $action_icons = array(
+            $actionicons = array(
                 'moveleft'     => 't/left',
                 'moveright'    => 't/right',
                 'hide'         => 't/show',
                 'show'         => 't/hide',
                 'delete'       => 't/delete'
-                //'moveto'     => 't/move'
             );
 
-            foreach ($action_icons as $action => $icon_path) {
-                $pix_path    = $OUTPUT->pix_url($icon_path);
-                $action_text = get_string('action_'.$action, 'block_massaction');
+            foreach ($actionicons as $action => $iconpath) {
+                $pixpath    = $OUTPUT->pix_url($iconpath);
+                $actiontext = get_string('action_'.$action, 'block_massaction');
 
                 $this->content->text .= <<< EOB
     <br/>
     <a id="mod-massaction-action-{$action}" class="massaction-action" href="javascript:void(0);">
-    	<img src="{$pix_path}" alt="{$action_text}" title="{$action_text}"/>&nbsp;{$action_text}
+    	<img src="{$pixpath}" alt="{$actiontext}" title="{$actiontext}"/>&nbsp;{$actiontext}
     </a>
 EOB;
             }
@@ -125,7 +126,8 @@ EOB;
     <select id="mod-massaction-control-section-list-moveto">
     	<option value="">{$str['action_movetosection']}</option>
     </select>
-    <form id="mod-massaction-control-form" name="mod-massaction-control-form" action="{$CFG->wwwroot}/blocks/massaction/action.php" method="POST">
+    <form id="mod-massaction-control-form" name="mod-massaction-control-form"
+            action="{$CFG->wwwroot}/blocks/massaction/action.php" method="POST">
     	<input type="hidden" id="mod-massaction-control-request" name="request" value="">
     	<input type="hidden" id="mod-massaction-instance_id" name="instance_id" value="{$this->instance->id}">
     	<input type="hidden" id="mod-massaction-return_url" name="return_url" value="{$_SERVER['REQUEST_URI']}">
