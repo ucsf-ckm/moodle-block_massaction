@@ -16,6 +16,9 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2016101701]
+- Re-enables the duplication funtionality and refactors it to work with Moodle 2.7 and earlier.
+
 [2016101700]
 - Properly fixes compatibility with OneTopic course format
 

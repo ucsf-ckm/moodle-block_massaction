@@ -93,6 +93,13 @@ switch ($data->action) {
         perform_moveto($modulerecords, $data->moveto_target);
         break;
 
+    case 'dupto':
+        if (!isset($data->dupto_target)) {
+            print_error('missingparam', 'block_massaction', 'dupto_target');
+        }
+        perform_dupto($modulerecords, $data->dupto_target);
+        break;
+
     default:
         print_error('invalidaction', 'block_massaction', $data->action);
 }
@@ -321,4 +328,55 @@ function perform_moveto($modules, $target) {
 
         moveto_module($modulerecord, $section);
     }
+}
+
+/**
+ * Perform the duplication of the selected course modules.
+ *
+ * @param array $modules Array of module record objects
+ * @param int $target ID of the section to duplicate to
+ *
+ * @return void
+ */
+function perform_dupto($modules, $target) {
+    global $CFG, $DB;
+
+    require_once($CFG->dirroot.'/course/lib.php');
+    $newcmids = array();
+
+    foreach ($modules as $modulerecord) {
+        // Check for all possible failure conditions before doing actual work.
+        if (!$cm = get_coursemodule_from_id('', $modulerecord->id, 0, true)) {
+            print_error('invalidcoursemodule');
+        }
+
+        if (!$course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST)) {
+            print_error('invalidcourse');
+        }
+
+        // Verify target section here even though perform_moveto will do this again because we do not want to
+        // create the new modules unless we can also move them.
+        if (!$section = $DB->get_record('course_sections', array('course' => $cm->course, 'section' => $target))) {
+            print_error('sectionnotexist', 'block_massaction');
+        }
+
+        $coursecontext = context_course::instance($course->id);
+        require_capability('moodle/course:manageactivities', $coursecontext);
+        require_capability('moodle/backup:backuptargetimport', $coursecontext);
+        require_capability('moodle/restore:restoretargetimport', $coursecontext);
+
+        if (!course_allowed_module($course, $cm->modname)) {
+            throw new moodle_exception('No permission to create that activity');
+        }
+
+        // No failures and we possess the required capabilities. Duplicate the module.
+        $sr = optional_param('sr', null, PARAM_INT);
+        $newcm = mod_duplicate_activity($course, $cm, $sr);
+
+        $newcmids[] = $newcm->cmid;
+    }
+
+    $modulerecords = $DB->get_records_select('course_modules', 'ID IN ('.
+            implode(',', array_fill(0, count($newcmids), '?')).')', $newcmids);
+    perform_moveto($modulerecords, $target);
 }
