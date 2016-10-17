@@ -16,6 +16,9 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2016101401]
+- Properly fixes compatibility with Flexible course format
+
 [2016101400]
 - Integrate with Travis CI and fix errors and warnings
 

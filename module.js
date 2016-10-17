@@ -83,10 +83,15 @@ M.block_massaction.init = function(Y, data) {
         section_selector.options[section_selector.options.length] = section_option;
 
         // Add to move-to-section.
-        section_option      = document.createElement('option');
+        section_option          = document.createElement('option');
         section_option.text     = section_text;
         section_option.value    = section_number;
         section_moveto.options[section_moveto.options.length] = section_option;
+
+        // Add to dup-to-section.
+        section_option          = document.createElement('option');
+        section_option.text     = section_text;
+        section_option.value    = section_number;
     }
 
     // Attach event handler for the controls.
