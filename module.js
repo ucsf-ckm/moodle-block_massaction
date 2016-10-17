@@ -44,43 +44,63 @@ M.block_massaction.init = function(Y, data) {
     var section_selector = document.getElementById('mod-massaction-control-section-list-select');
     var section_moveto   = document.getElementById('mod-massaction-control-section-list-moveto');
     var section_text = '';
+    var active_section = 0;
     var section_option = '';
 
     for (var section_number in sections) {
-        if (section_number === '0') {    // General/first section.
-            section_text = M.util.get_string('section_zero', 'block_massaction');
+        if (data.course_format === 'onetopic') {
+            // OneTopic format requires special treatment.
+            // All its sections are named 'Topic X', where X is the section number.
+            section_text = M.util.get_string('topic', 'block_massaction') + ' ' + section_number;
+
+            // Check if this section number's array has any elements.
+            // If it does, it is the active section.
+            if (sections[section_number].length > 0) {
+                active_section = section_number;
+            }
         } else {
-            // Find the section name.
-            var sectionname_node = Y.one('#section-' + section_number + ' h3.sectionname');
-
-            if (sectionname_node !== null) {
-                section_text = sectionname_node.get('text');
-            } else if (Y.one('div.single-section')) { // Check for single section view.
-                section_text = Y.one('div.single-section h3.sectionname').get('text');
+            if (section_number === '0') {    // General/first section.
+                section_text = M.util.get_string('section_zero', 'block_massaction');
             } else {
-                // Determine the option text depending on course format.
-                switch (data.course_format) {
-                    case 'weeks':
-                         section_text = M.util.get_string('week', 'block_massaction') + ' ' + section_number;
-                         break;
+                // Find the section name.
+                var sectionname_node = Y.one('#section-' + section_number + ' h3.sectionname');
 
-                    case 'topics':
-                         section_text = M.util.get_string('topic', 'block_massaction') + ' ' + section_number;
-                         break;
+                if (sectionname_node !== null) {
+                    section_text = sectionname_node.get('text');
+                } else if (Y.one('div.single-section')) { // Check for single section view.
+                    section_text = Y.one('div.single-section h3.sectionname').get('text');
+                } else {
+                    // Determine the option text depending on course format.
+                    switch (data.course_format) {
+                        case 'weeks':
+                             section_text = M.util.get_string('week', 'block_massaction') + ' ' + section_number;
+                             break;
 
-                    default:
-                         section_text = M.util.get_string('section', 'block_massaction') + ' ' + section_number;
-                         break;
+                        case 'topics':
+                             section_text = M.util.get_string('topic', 'block_massaction') + ' ' + section_number;
+                             break;
+
+                        default:
+                             section_text = M.util.get_string('section', 'block_massaction') + ' ' + section_number;
+                             break;
+                    }
                 }
             }
         }
 
         // Add to section selector.
-        section_option      = document.createElement('option');
-        section_option.text     = section_text;
-        section_option.value    = section_number;
-        section_option.disabled = sections[section_number].length === 0; // If has no module to select.
-        section_selector.options[section_selector.options.length] = section_option;
+        /* If this is a OneTopic formatted course, we're only displaying the active topic
+         * in the 'Select all in section' drop menu because that's the only one with any
+         * selectable modules.
+         */
+        if (data.course_format !== 'onetopic' ||
+                (data.course_format === 'onetopic' && section_number === active_section)) {
+            section_option      = document.createElement('option');
+            section_option.text     = section_text;
+            section_option.value    = section_number;
+            section_option.disabled = sections[section_number].length === 0; // If has no module to select.
+            section_selector.options[section_selector.options.length] = section_option;
+        }
 
         // Add to move-to-section.
         section_option          = document.createElement('option');

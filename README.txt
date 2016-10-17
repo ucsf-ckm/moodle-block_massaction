@@ -16,6 +16,9 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2016101700]
+- Properly fixes compatibility with OneTopic course format
+
 [2016101401]
 - Properly fixes compatibility with Flexible course format
 

@@ -47,11 +47,22 @@ Module_selector.prototype.add_checkboxes = function() {
 
     var section_number = 0;
 
-    if (Y.one('div.single-section')) {
+    if (Y.one('div.single-section') && !Y.one('div.onetopic')) {
         self.add_section(section_number);
         var id = Y.one('div.single-section li').get('id').split('-'); // Get the single section id.
         section_number = id[1];
         self.add_section(section_number);
+    } else if (Y.one('div.onetopic')) {
+        var ulist = Y.one('ul.nav-tabs').get('children');
+        var childtext = '';
+        ulist.each(function(ulist_child) {
+            childtext = ulist_child.get('innerText');
+            if (childtext !== '') {
+                childtext = childtext.split(' ');
+                section_number = childtext[1];
+                self.add_section(section_number, 'onetopic');
+            }
+        });
     } else {
         var sections = Y.all('li.section');
         sections.each(function(section_el) {
@@ -65,32 +76,35 @@ Module_selector.prototype.add_checkboxes = function() {
 /**
  * add section to array
  */
-Module_selector.prototype.add_section = function(section_number) {
+Module_selector.prototype.add_section = function(section_number, parentclass) {
     var self = this;
     var LIs = '';
 
     // Add the section to the registry.
     self.sections[section_number] = [];
 
-    // Find all LI with class 'activity' or 'resource'.
-    LIs = Y.one('#section-' + section_number).all('li.activity');
-
-    LIs.each(self.parse_list_items(module_el));
-
-    section_number++;  // Advance the loop.
-    section = Y.one('#section-' + section_number);
-};
-
-Module_selector.prototype.parse_list_items = function(module_el) {
-    if (module_el.hasAttribute('id')) {
-        var module_id = module_el.getAttribute('id');
-
-        // Verify if it's a module container.
-        if (module_id === null || module_id.substring(0, 7) !== 'module-') {
-            return false;
+    if (parentclass === 'onetopic') {
+        if (Y.one('#section-' + section_number)) {
+            LIs = Y.one('div.content ul').all('li');
         }
+    } else {
+        // Find all LI with class 'activity' or 'resource'.
+        LIs = Y.one('#section-' + section_number).all('li.activity');
+    }
 
-        self.add_module_checkbox(section_number, module_el);
+    if (LIs !== '') {
+        LIs.each(function(module_el) {
+            if (module_el.hasAttribute('id')) {
+                var module_id = module_el.getAttribute('id');
+
+                // Verify if it's a module container.
+                if (module_id === null || module_id.substring(0, 7) !== 'module-') {
+                    return false;
+                }
+
+                self.add_module_checkbox(section_number, module_el);
+            }
+        });
     }
 };
 
