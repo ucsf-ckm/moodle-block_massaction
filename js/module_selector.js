@@ -97,7 +97,7 @@ Module_selector.prototype.add_section = function(section_number, parentclass, in
         }
     } else {
         // Add the section to the registry.
-        self.sections[section_number] = [];
+        self.sections[section_number] = {modules: []};
 
         // Find all LI with class 'activity' or 'resource'.
         LIs = Y.one('#section-' + section_number).all('li.activity');
