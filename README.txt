@@ -1,5 +1,4 @@
-This is the Mass Actions block for Moodle 3.2 and up. Its appearance and behaviors
-are largely the same as the version for Moodle 1.9.
+This is the Mass Actions block for Moodle 3.2 and up.
 
 Created at University of Minnesota by the Custom Solutions team.
 
@@ -7,15 +6,63 @@ To install using git, type this command in the root of your Moodle install
     git clone git@github.com:at-tools/moodle-block_massaction.git
 
 Alternatively, download the zip from
-    https://github.com/at-tools/moodle-block_massaction/zipball/master
-unzip it into the blocks folder, and then rename the new folder to massaction.
-
+    https://github.com/at-tools/moodle-block_massaction/archive/moodle-32-master.zip
+Unzip it into the blocks folder, and then rename the new folder to massaction.
 
 Once installed, capability "block/massaction:use" needs to be added to the roles/users
 (e.g. teacher) in order for them to be able to use the block.
 
 
 RELEASE NOTE
+[2017091800]
+*** Behavioural changes ***
+- Removed the deletion confirmation page. When deleting one or more modules using
+    Mass Actions, there is now only a Javascript confirmation. The confirmation page
+    felt redundant and so I removed it.
+- When making a selection from the "Select all in section" menu, the "Deselect all"
+    action is invoked first. In the event of a misclick, this eliminates the need to
+    click "Deselect all" or to manually uncheck any checked modules before making
+    the correct selection from the menu. However, it means that users can no longer
+    select all in two or more sections using the menu, which was probably a fairly
+    rare case.
+- Users of the OneTopic format may now use "Select all" to apply an action to all
+    modules in their course.
+- Users of the OneTopic format may now use "Select all in section" to select any
+    section in their course that has modules. Previously, they were able to only
+    select the section displayed on their screen. This makes the OneTopic course
+    format behave like all other course formats.
+
+*** Technical changes ***
+- Converted from YUI to jQuery/AMD library
+- Added ./amd/src/block_massaction.js
+- Removed ./module.js and ./js/module_selector.js
+- applicable_formats() now uses course_format_uses_sections() to determine whether
+    to make Mass Actions available to a course format
+- get_content() now provides a two dimensional array of course data to the Javascript,
+    reducing the block's dependence on the DOM (and reducing its fragility)
+- Added several hidden inputs to the form submitted when the user chooses the action
+    to take on selected modules
+- Added the _self_test function
+- Changed 'moveleft' to 'outdent', 'moveright' to 'indent', 'moveto' to 'move', and
+    'dupto' to 'clone'
+- Renamed the 'perform_moveto' function as 'move_module' and the 'perform_dupto' function
+    as 'clone_module'
+- Removed the print_deletion_confirmation function
+- Removed code from the perform_deletion function that has long been obsolete, as it was
+    specific to Moodle 2.4 and earlier
+- Moved code duplicated in move_module(), clone_module(), and perform_deletion() to new functions
+    and replaced that code with function calls
+- Moved capability checks that previously happened prior to calling the functions to change
+    indentation or visibility to happen inside the functions, instead. This makes the timing
+    and location of the capability checks for these actions consistent with the timing and
+    location of the capability checks for the other actions.
+- Cleaned up the naming scheme for CSS class names and ids, with the overall goal being
+    to simplify them and make them more logical and predictable
+- Updated styles.css as necessary
+- Updated some language string keys to match the changes in naming conventions; this work
+    will probably be on-going
+- Removed some language strings that were clearly obsolete and no longer used
+
 [2017062800]
 - Fix Boost theme bug that caused checkboxes not to display (lbroda)
 
