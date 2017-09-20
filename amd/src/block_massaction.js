@@ -78,8 +78,8 @@ define(['jquery', 'core/str'], function($, corestr) {
                      * We need the spans that house the edit controls in order to append our checkboxes
                      * to them later.
                      */
-                    jQueryIdentifier = sectionId + ' ul.section li.activity ' + 'div.mod-indent-outer div';
-                    courseActivities = $('#section' + jQueryIdentifier).children('span.actions');
+                    jQueryIdentifier = sectionId + ' ul.section li.activity div.mod-indent-outer div';
+                    courseActivities = $('#section-' + jQueryIdentifier).children('span.actions');
 
                     for (moduleKey in data['sectionmodules'][sectionId]) {
                         if (moduleKey !== null) {

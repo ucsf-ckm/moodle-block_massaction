@@ -14,6 +14,9 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2017092000]
+- Fixed typo in javascript causing checkboxes not to draw (missing hyphen)
+
 [2017091800]
 *** Behavioural changes ***
 - Removed the deletion confirmation page. When deleting one or more modules using
