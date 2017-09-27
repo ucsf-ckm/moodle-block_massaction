@@ -1,4 +1,4 @@
-This is the Mass Actions block for Moodle 3.2 and up.
+This is the Mass Actions block for Moodle 3.2.
 
 Created at University of Minnesota by the Custom Solutions team.
 
@@ -14,6 +14,16 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2017092600]
+- Re-implement the deletion confirmation page that displays after the user responds
+    in the affirmative to the javascript confirmation dialog box
+- Moved the table heading text into language strings
+- Added a configuration page and setting for controlling whether to have the block check
+    whether javascript is enabled in the user's browser
+- All new French language strings courtesy Google Translate
+    - Better translations are welcome
+- Hebrew translations have not been done; Any translations are welcome
+
 [2017092000]
 - Fixed typo in javascript causing checkboxes not to draw (missing hyphen)
 
