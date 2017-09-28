@@ -14,6 +14,9 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2017092700]
+- Remove the javascript-enabled check and configuration page completely
+
 [2017092600]
 - Re-implement the deletion confirmation page that displays after the user responds
     in the affirmative to the javascript confirmation dialog box
