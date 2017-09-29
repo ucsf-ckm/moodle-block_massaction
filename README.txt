@@ -14,6 +14,12 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2017092801]
+- Correct function call when drawing checkboxes from append() to appendChild(),
+    which the latest versions of Chrome and Firefox are fault-tolerant of, whereas
+    older versions of Firefox (possibly Chrome, too; unknown) were not and would
+    throw a javascript error when encountered
+
 [2017092800]
 - Remove the javascript-enabled check and configuration page completely
 
