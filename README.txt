@@ -14,6 +14,10 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2017092900]
+- Refactored the javascript to remove all but two lint warnings
+- Updated documentation in the php files to remove code pre-check warnings
+
 [2017092801]
 - Correct function call when drawing checkboxes from append() to appendChild(),
     which the latest versions of Chrome and Firefox are fault-tolerant of, whereas
