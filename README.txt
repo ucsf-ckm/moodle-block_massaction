@@ -14,7 +14,7 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
-[2017092700]
+[2017092800]
 - Remove the javascript-enabled check and configuration page completely
 
 [2017092600]
