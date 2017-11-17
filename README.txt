@@ -14,6 +14,10 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2017111700]
+- Fixed errror in javascript so the error message will actually display when
+    no checkboxes are checked
+
 [2017092900]
 - Refactored the javascript to remove all but two lint warnings
 - Updated documentation in the php files to remove code pre-check warnings
