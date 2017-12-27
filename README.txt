@@ -14,6 +14,15 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
+[2017122700]
+- Removed deprecated function for icons and changed html structure; Thanks to
+    Github user adpe for this!
+- Organized changed code into several new functions to enhance readability &
+    maintainability, as well as to keep code complexity and function lengths
+    to a minimum
+- Updated styles.css to correctly address the unordered lists and remove list
+    style types
+
 [2017111700]
 - Fixed errror in javascript so the error message will actually display when
     no checkboxes are checked
