@@ -14,9 +14,11 @@ Once installed, capability "block/massaction:use" needs to be added to the roles
 
 
 RELEASE NOTE
-[2018042400] Added !important rule to list-style-type for block elements; Thanks to Github
+[2018042400]
+- Added !important rule to list-style-type for block elements; Thanks to Github
     user adpe for this! (Forgot to carry this forward to the version for 3.4)
 
+[2017122700]
 - Removed deprecated function for icons and changed html structure; Thanks to
     Github user adpe for this!
 - Organized changed code into several new functions to enhance readability &
